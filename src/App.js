@@ -1,16 +1,17 @@
 import React, { useEffect } from "react";
 import "./App.css";
 import HomeScreen from "./screens/HomeScreen";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import LoginScreen from "./screens/LoginScreen";
 import { auth } from "./firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { login, logout, selectUser } from "./features/userSlice";
+import ProfileScreen from "./screens/ProfileScreen";
 
 function App() {
-  const users = useSelector(selectUser);
-  const user = users;
+  const user= useSelector(selectUser);
   const dispatch = useDispatch();
+  // const navigate=useNavigate();
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((userAuth) => {
       if (userAuth) {
@@ -22,20 +23,21 @@ function App() {
         }))
       } else {
         //Logged Out
-        dispatch(logout);
+        dispatch(logout());
       }
     });
-    return unsubscribe;
-  }, []);
+    return  unsubscribe;
+  }, [dispatch]);
   return (
     <div className="app">
       <BrowserRouter>
         <Routes>
           {!user ? (
             <Route path="/" element={<LoginScreen />} />
-          ) : (
-            <Route path="/" element={<HomeScreen />} />
-          )}
+          ) : (<>
+            <Route exact path="/" element={<HomeScreen />} />
+            <Route path="/profile" element={<ProfileScreen />} />
+            </>)}
         </Routes>{" "}
       </BrowserRouter>
     </div>

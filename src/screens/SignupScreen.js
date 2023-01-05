@@ -33,6 +33,7 @@ const SignupScreen = () => {
       <form>
         <h1>Sign In</h1>
         <input ref={emailRef} type="email" placeholder="Email" />
+        {/* {console.log(emailRef.current.value)} */}
         <input ref={passwordRef} type="password" placeholder="password" />
         <button onClick={signIn} type="submit">
           Sign In
